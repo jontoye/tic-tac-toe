@@ -69,27 +69,36 @@ const controlBtnsElement = document.querySelector('.control-buttons');
 const playerNameElement = document.querySelector('#player-name');
 const playerImgElement = document.querySelector('#player-img');
 const msgBoxElement = document.querySelector('.msg-box');
-const winsPlayerOneElement = document.querySelector('#wins-p1');
-const winsPlayerTwoElement = document.querySelector('#wins-p2');
+const scorePlayerOneElement = document.querySelector('#score-p1');
+const scorePlayerTwoElement = document.querySelector('#score-p2');
 
 // Event Listeners
 boardElement.addEventListener('click', onBoardClick);
 controlBtnsElement.addEventListener('click', onBtnClick);
 
 
-// Add the current players marker to the square with specified id
+// Add OR remove the current players marker to the square with specified id
 function renderBoard(id) {
     let squareElement = document.getElementById(id);
-    let markerElement = document.createElement('img');
-    markerElement.classList.add('marker');
-    markerElement.src = game.players[game.board[id]].img;
-    squareElement.append(markerElement);
+
+    // Removes a marker
+    if (squareElement.hasChildNodes()) {
+        squareElement.removeChild(squareElement.firstChild);
+
+    // Adds a marker
+    } else {
+        let markerElement = document.createElement('img');
+        markerElement.classList.add('marker');
+        markerElement.src = game.players[game.board[id]].img;
+        squareElement.append(markerElement);
+    }
+
 }
 
 // Update the game-stats box
 function renderGameInfo() {
-    let currentPlayerName = game.players[game.whosTurn].name;
-    let currentPlayerImg = game.players[game.whosTurn].img;
+    let currentPlayerName = getCurrentPlayer().name;
+    let currentPlayerImg = getCurrentPlayer().img;
     playerNameElement.innerText = currentPlayerName;
     playerImgElement.setAttribute('src', currentPlayerImg);
 }
@@ -101,10 +110,11 @@ function renderEndGame() {
         msgBoxElement.innerText = 'TIE GAME';
     } else {
         console.log(`${game.winner} wins!`);
-        msgBoxElement.innerText = `GAME OVER: ${game.winner.toUpperCase()} WINS!`;
+        msgBoxElement.innerText = `GAME OVER 
+            ${game.winner.toUpperCase()} WINS!`;
     }
-    winsPlayerOneElement.innerText = `${game.players[1].name}: ${game.players[1].wins}`
-    winsPlayerTwoElement.innerText = `${game.players[2].name}: ${game.players[2].wins}`
+    scorePlayerOneElement.innerText = `${game.players[1].name}: ${game.players[1].wins}`
+    scorePlayerTwoElement.innerText = `${game.players[2].name}: ${game.players[2].wins}`
 }
 
 function renderClearBoard() {
@@ -139,7 +149,7 @@ function onBoardClick(event) {
     
         // Update the game object data
         game.board[elementClicked.id] = game.whosTurn;
-        game.players[game.whosTurn].squares.push(Number(elementClicked.id));
+        getCurrentPlayer().squares.push(Number(elementClicked.id));
 
         renderBoard(elementClicked.id);
         checkForWinner();
@@ -149,7 +159,7 @@ function onBoardClick(event) {
             renderEndGame();
             return;
         } else {
-            game.whosTurn = game.whosTurn === 1 ? 2 : 1;
+            switchPlayer();
         }
         renderGameInfo();
     }
@@ -165,11 +175,16 @@ function onBtnClick(event) {
 }
 
 function undoLastMove() {
-    console.log('undo last move');
+    if (game.players[1].squares.length + game.players[2].squares.length > 0) {
+        switchPlayer();
+        let lastPlayedSquare = getCurrentPlayer().squares.pop();
+        renderBoard(lastPlayedSquare);
+        renderGameInfo();
+    }
 }
 
 function checkForWinner() {
-    let currentPlayerPositions = game.players[game.whosTurn].squares
+    let currentPlayerPositions = getCurrentPlayer().squares
 
     // Only checks for winner if current player occupies at least 3 squares
     if (currentPlayerPositions.length > 2) {
@@ -177,8 +192,8 @@ function checkForWinner() {
             if (currentPlayerPositions.includes(winningLine[0]) &&
                 currentPlayerPositions.includes(winningLine[1]) &&
                 currentPlayerPositions.includes(winningLine[2])) {
-                    game.winner = game.players[game.whosTurn].name;
-                    game.players[game.whosTurn].wins++;
+                    game.winner = getCurrentPlayer().name;
+                    getCurrentPlayer().wins++;
                     game.playing = false;
                     return;
                 }
@@ -190,6 +205,14 @@ function checkForWinner() {
         game.winner = 'TIE';
         game.playing = false;
     }
+}
+
+function switchPlayer() {
+    game.whosTurn = game.whosTurn === 1 ? 2 : 1;
+}
+
+function getCurrentPlayer() {
+    return game.players[game.whosTurn];
 }
 
 function restartGame() {

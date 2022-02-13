@@ -1,4 +1,14 @@
 /*****************************************************
+ * VARIABLES
+ ****************************************************/
+:root {
+    --color-white: rgb(226, 226, 226);
+    --color-green: #86c232;
+    --color-gray: #222629;
+    --color-bg: var(--color-gray);
+}
+
+/*****************************************************
  * GENERAL
  ****************************************************/
 * {
@@ -8,38 +18,55 @@
 }
 
 body {
-    font-family: Futura, sans-serif;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 2px;
+    line-height: 1.6;
+    background-color: var(--color-bg);
+    color: var(--color-green);
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 
 .main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
+    flex-direction: column;
+    max-width: 650px;
+}
+
+
+.secondary {
+    flex-direction: column;
+}
+
+h2 {
+    font-size: 24px;
 }
 
 /*****************************************************
  * BOARD
  ****************************************************/
  .board {
-     flex: 1;
      display: grid;
-     grid-template-columns: repeat(3, 1fr);
-     grid-template-rows: repeat(3, 1fr);
+     grid-template-columns: repeat(3, 80px);
+     grid-template-rows: repeat(3, 80px);
+     margin-bottom: 25px;
+     order: 2;
  }
 
 .square {
-    border: 2px solid black;
+    border: 1px solid var(--color-green);
     display: inline-block;
     position: relative;
-    aspect-ratio: 1 / 1;
-
 }
 
 .marker {
-    width: 75%;
+    width: 70%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -50,22 +77,22 @@ body {
  * GAME-INFO
  ****************************************************/
 .game-info {
-    flex: 1;
-    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    padding: 50px 20px;
+    order: 1;
+    margin-bottom: 20px;
 }
 
 /***************** whos-turn *******************/
 .whos-turn {
-    /* border: 1px solid green; */
+    text-align: center;
 }
 
+
 #player-name {
-    font-size: 24px;;
+    font-size: 18px;;
 }
 
 .player-card {
@@ -75,30 +102,88 @@ body {
     padding: 15px;
 }
 
-#player-img {
-    width: 75px;
+#player-name {
+    margin-bottom: 15px;
 }
 
-/***************** win-count *******************/
-.win-count {
-    text-align: center;
+#player-img {
+    width: 60px;
 }
-.win-count p {
-    display: inline-block;
+
+/***************** scores *******************/
+.scores {
+    text-align: center;
+    /* padding: 20px */
 }
 
 /***************** control-buttons *******************/
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 button {
     padding: 7px 25px;
     border: none;
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: var(--color-green);
+    color: var(--color-gray);
+    font-size: 18px;
+    display: inline-block;
 }
 
 button:hover {
     cursor: pointer;
+    background-color: var(--color-white);
+}
+
+#undoBtn {
+    margin-bottom: 10px;
 }
 
  /*****************************************************
  * MSG-BOX
  ****************************************************/
+.msg-box {
+    text-align: center;
+    font-size: 30px;
+}
+
+ /*****************************************************
+ * MEDIA QUERIES
+ ****************************************************/
+ @media (min-width: 750px) {
+
+    h2 {
+        font-size: 32px;
+    }
+    
+    .main {
+        flex-direction: row;
+        padding-top: 60px;
+    }
+
+    .board {
+        order: 1;
+        grid-template-columns: repeat(3, 120px);
+        grid-template-rows: repeat(3, 120px);
+    }
+
+    .game-info {
+        order: 2;
+    }
+
+    .control-buttons {
+        flex-direction: row;
+    }
+
+    #undoBtn {
+        margin-bottom: 0;
+        margin-right: 20px;
+    }
+
+    .msg-box {
+        font-size: 40px;
+    }
+}

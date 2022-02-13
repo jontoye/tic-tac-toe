@@ -5,11 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-    <section class="main">
+    <section class="main container">
     
         <div class="board">
 
@@ -17,11 +20,9 @@
             <div id="1" class="square"></div>
             <div id="2" class="square"></div>
 
-
             <div id="3" class="square"></div>
             <div id="4" class="square"></div>
             <div id="5" class="square"></div>
-
 
             <div id="6" class="square"></div>
             <div id="7" class="square"></div>
@@ -30,7 +31,6 @@
         </div>
     
         <div class="game-info">
-
             <div class="whos-turn">
                 <h2>Next Turn</h2>
                 <div class="player-card">
@@ -39,25 +39,21 @@
                 </div>
             </div>
 
-            <div class="win-count">
-                <h2>Wins</h2>
-                <p id="wins-p1">Player 1: </p>
-                <p id="wins-p2">Player 2: </p>
+            <div class="scores">
+                <h2>Score</h2>
+                <p id="score-p1"></p>
+                <p id="score-p2"></p>
             </div>
-
-            <div class="control-buttons">
-                <button id="restartBtn">Restart</button>
-                <button id="undoBtn">Undo Last Move</button>
-            </div>
-
-
         </div>
 
     </section>
 
-    <section class="secondary">
+    <section class="secondary container">
+        <div class="control-buttons">
+            <button id="undoBtn">Undo Last Move</button>
+            <button id="restartBtn">Restart</button>
+        </div>
         <div class="msg-box">
-            
         </div>
     </section>
     
