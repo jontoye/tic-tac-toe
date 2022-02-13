@@ -9,23 +9,57 @@
 </head>
 <body>
 
-    <div class="board">
-        <div class="row">
+    <section class="main">
+    
+        <div class="board">
+
             <div id="0" class="square"></div>
             <div id="1" class="square"></div>
             <div id="2" class="square"></div>
-        </div>
-        <div class="row">
+
+
             <div id="3" class="square"></div>
             <div id="4" class="square"></div>
             <div id="5" class="square"></div>
-        </div>
-        <div class="row">
+
+
             <div id="6" class="square"></div>
             <div id="7" class="square"></div>
             <div id="8" class="square"></div>
+
         </div>
-    </div>
+    
+        <div class="game-info">
+
+            <div class="whos-turn">
+                <h2>Next Turn</h2>
+                <div class="player-card">
+                    <p id="player-name"></p>
+                    <img src="" id="player-img">
+                </div>
+            </div>
+
+            <div class="win-count">
+                <h2>Wins</h2>
+                <p id="wins-p1">Player 1: </p>
+                <p id="wins-p2">Player 2: </p>
+            </div>
+
+            <div class="control-buttons">
+                <button id="restartBtn">Restart</button>
+                <button id="undoBtn">Undo Last Move</button>
+            </div>
+
+
+        </div>
+
+    </section>
+
+    <section class="secondary">
+        <div class="msg-box">
+            
+        </div>
+    </section>
     
     <script src="js/main.js"></script>
 </body>

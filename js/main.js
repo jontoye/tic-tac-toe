@@ -29,25 +29,53 @@ const game = {
     ],
 
     players: {
-        1: {name: 'Jon', img: "img/x-img.png", squares: []},
-        2: {name: 'Cheryl', img: "img/o-img.png", squares: []}
+        1: {name: 'Player 1', img: "img/x-img.png", squares: [], wins: 0},
+        2: {name: 'Player 2', img: "img/o-img.png", squares: [], wins: 0}
     },
 
     whosTurn: null,
     winner: null,
     playing: false,
 
-    init: function() {
+    // Rest data for next round
+    reset: function() {
+        this.clearBoard();
+        this.clearPlayerSquares();
         this.playing = true;
         this.whosTurn = 1;
+        this.winner = null;
     },
+
+    clearBoard: function() {
+        for (let id in this.board) {
+            this.board[id] = null;
+        }
+    },
+
+    clearPlayerSquares: function() {
+        for (let id in this.players) {
+            this.players[id].squares = [];
+        }
+    }
 }
 
 /*****************************************************
  * VIEW
  ****************************************************/
+// DOM Elements
 const boardElement = document.querySelector('.board');
+const squareElements = document.querySelectorAll('.square');
+const controlBtnsElement = document.querySelector('.control-buttons');
+const playerNameElement = document.querySelector('#player-name');
+const playerImgElement = document.querySelector('#player-img');
+const msgBoxElement = document.querySelector('.msg-box');
+const winsPlayerOneElement = document.querySelector('#wins-p1');
+const winsPlayerTwoElement = document.querySelector('#wins-p2');
+
+// Event Listeners
 boardElement.addEventListener('click', onBoardClick);
+controlBtnsElement.addEventListener('click', onBtnClick);
+
 
 // Add the current players marker to the square with specified id
 function renderBoard(id) {
@@ -58,26 +86,51 @@ function renderBoard(id) {
     squareElement.append(markerElement);
 }
 
-// Display end game message
+// Update the game-stats box
+function renderGameInfo() {
+    let currentPlayerName = game.players[game.whosTurn].name;
+    let currentPlayerImg = game.players[game.whosTurn].img;
+    playerNameElement.innerText = currentPlayerName;
+    playerImgElement.setAttribute('src', currentPlayerImg);
+}
+
+// Display end game message and update stats
 function renderEndGame() {
     if (game.winner === 'TIE') {
         console.log('TIE GAME')
+        msgBoxElement.innerText = 'TIE GAME';
     } else {
         console.log(`${game.winner} wins!`);
+        msgBoxElement.innerText = `GAME OVER: ${game.winner.toUpperCase()} WINS!`;
     }
+    winsPlayerOneElement.innerText = `${game.players[1].name}: ${game.players[1].wins}`
+    winsPlayerTwoElement.innerText = `${game.players[2].name}: ${game.players[2].wins}`
 }
 
-function clearBoard() {
+function renderClearBoard() {
+    squareElements.forEach(square => {
+        if (square.hasChildNodes()) {
+            square.removeChild(square.firstChild);
+        }
+    })
+}
 
+function renderClearMessage() {
+    msgBoxElement.innerText = '';
 }
 
 /*****************************************************
  * CONTROLLER
  ****************************************************/
+function init() {
+    game.reset();
+    renderGameInfo();
+}
+
 function onBoardClick(event) {
-    let elementClicked = event.target;
 
     if (game.playing) {
+        let elementClicked = event.target;
 
         // If the space clicked is already occupied or is not a square element, exit handler
         if (elementClicked.hasChildNodes() || 
@@ -94,16 +147,25 @@ function onBoardClick(event) {
         // Check if game continues
         if (game.winner) {
             renderEndGame();
+            return;
         } else {
             game.whosTurn = game.whosTurn === 1 ? 2 : 1;
         }
-
+        renderGameInfo();
     }
+}
 
+function onBtnClick(event) {
+        let elementClicked = event.target;
+        if (elementClicked.id === 'restartBtn') {
+            restartGame();
+        } else if (elementClicked.id === 'undoBtn' && game.playing) {
+            undoLastMove();
+        }
 }
 
 function undoLastMove() {
-
+    console.log('undo last move');
 }
 
 function checkForWinner() {
@@ -116,6 +178,7 @@ function checkForWinner() {
                 currentPlayerPositions.includes(winningLine[1]) &&
                 currentPlayerPositions.includes(winningLine[2])) {
                     game.winner = game.players[game.whosTurn].name;
+                    game.players[game.whosTurn].wins++;
                     game.playing = false;
                     return;
                 }
@@ -129,9 +192,11 @@ function checkForWinner() {
     }
 }
 
-function restart() {
-
+function restartGame() {
+    renderClearBoard();
+    renderClearMessage();
+    init();
 }
 
-game.init();
+init();
 window.game = game;

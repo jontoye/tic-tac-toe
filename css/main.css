@@ -1,15 +1,40 @@
+/*****************************************************
+ * GENERAL
+ ****************************************************/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+body {
+    font-family: Futura, sans-serif;
+}
+
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+/*****************************************************
+ * BOARD
+ ****************************************************/
+ .board {
+     flex: 1;
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     grid-template-rows: repeat(3, 1fr);
+ }
+
 .square {
-    width: 150px;
-    height: 150px;
     border: 2px solid black;
     display: inline-block;
     position: relative;
+    aspect-ratio: 1 / 1;
 
 }
 
@@ -21,4 +46,59 @@
     transform: translate(-50%, -50%);
 }
 
+/*****************************************************
+ * GAME-INFO
+ ****************************************************/
+.game-info {
+    flex: 1;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px 20px;
+}
 
+/***************** whos-turn *******************/
+.whos-turn {
+    /* border: 1px solid green; */
+}
+
+#player-name {
+    font-size: 24px;;
+}
+
+.player-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+#player-img {
+    width: 75px;
+}
+
+/***************** win-count *******************/
+.win-count {
+    text-align: center;
+}
+.win-count p {
+    display: inline-block;
+}
+
+/***************** control-buttons *******************/
+button {
+    padding: 7px 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: lightblue;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+ /*****************************************************
+ * MSG-BOX
+ ****************************************************/
