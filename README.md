@@ -1,2 +1,8 @@
-# lab-tic-tac-toe
-Browser Tic Tac Toe Game
+# Tic Tac Toe Game
+
+## Screenshots
+![](img/intro-page.png)
+
+![](img/game-page.png)
+
+![](img/win-game.png)
